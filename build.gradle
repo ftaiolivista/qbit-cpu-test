@@ -1,0 +1,51 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
+  }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+// === Config ===
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile module('org.codehaus.groovy:groovy-all:2.4.5'){
+      dependency('io.advantageous.qbit:qbit-admin:0.9.1-SNAPSHOT')
+      dependency('io.advantageous.qbit:qbit-vertx:0.9.1-SNAPSHOT')
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+              'Implementation-Title': 'QbitCpuTest',
+              'Implementation-Version': version,
+              'Main-Class': 'it.vista.qbit.QbitCpuTest'
+              )
+    }
+    into('lib') {
+      from 'lib'
+    }
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+
+mainClassName = "it.vista.qbit.QbitCpuTest"
